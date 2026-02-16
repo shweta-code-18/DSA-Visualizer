@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { ArrowRight, BarChart3, Code2, Gauge, Play } from 'lucide-react';
 
 const MotionSection = motion.section;
@@ -58,6 +65,98 @@ const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: 'easeOut' } },
 };
+
+function TiltCard({ children, className }) {
+  const cardRef = useRef(null);
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const glowX = useMotionValue(50);
+  const glowY = useMotionValue(50);
+  const glowOpacity = useMotionValue(0);
+  const hoverStrength = useMotionValue(0);
+
+  const smoothRotateX = useSpring(rotateX, { stiffness: 220, damping: 24, mass: 0.9 });
+  const smoothRotateY = useSpring(rotateY, { stiffness: 220, damping: 24, mass: 0.9 });
+  const smoothGlowOpacity = useSpring(glowOpacity, {
+    stiffness: 240,
+    damping: 26,
+    mass: 0.85,
+  });
+  const smoothHoverStrength = useSpring(hoverStrength, {
+    stiffness: 220,
+    damping: 24,
+    mass: 0.9,
+  });
+
+  const shadowX = useTransform(smoothRotateY, [-14, 14], [-18, 18]);
+  const shadowY = useTransform(smoothRotateX, [-14, 14], [18, -18]);
+  const shadowBlurNear = useTransform(smoothHoverStrength, [0, 1], [0, 34]);
+  const shadowBlurFar = useTransform(smoothHoverStrength, [0, 1], [0, 72]);
+  const shadowBlueAlpha = useTransform(smoothHoverStrength, [0, 1], [0, 0.4]);
+  const shadowCyanAlpha = useTransform(smoothHoverStrength, [0, 1], [0, 0.2]);
+  const dynamicShadow = useMotionTemplate`${shadowX}px ${shadowY}px ${shadowBlurNear}px rgba(37, 99, 235, ${shadowBlueAlpha}), ${shadowX}px ${shadowY}px ${shadowBlurFar}px rgba(34, 211, 238, ${shadowCyanAlpha})`;
+  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glowX}% ${glowY}%, rgba(59, 130, 246, 0.42), rgba(34, 211, 238, 0.22) 28%, rgba(15, 23, 42, 0) 60%)`;
+
+  const resetTilt = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+    glowOpacity.set(0);
+    hoverStrength.set(0);
+    glowX.set(50);
+    glowY.set(50);
+  };
+
+  const handlePointerMove = (event) => {
+    if (event.pointerType === 'touch') return;
+
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const px = (event.clientX - rect.left) / rect.width;
+    const py = (event.clientY - rect.top) / rect.height;
+
+    rotateX.set((0.5 - py) * 14);
+    rotateY.set((px - 0.5) * 14);
+    glowX.set(px * 100);
+    glowY.set(py * 100);
+    hoverStrength.set(1);
+    glowOpacity.set(1);
+  };
+
+  return (
+    <div className="h-full [perspective:1200px]">
+      <MotionDiv
+        ref={cardRef}
+        onPointerMove={handlePointerMove}
+        onPointerEnter={() => {
+          hoverStrength.set(1);
+          glowOpacity.set(0.7);
+        }}
+        onPointerLeave={resetTilt}
+        onPointerUp={resetTilt}
+        whileHover={{ scale: 1.04, y: -6 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20, mass: 0.8 }}
+        style={{
+          rotateX: smoothRotateX,
+          rotateY: smoothRotateY,
+          boxShadow: dynamicShadow,
+          transformStyle: 'preserve-3d',
+        }}
+        className={`relative h-full overflow-hidden will-change-transform ${className}`}
+      >
+        <MotionDiv
+          aria-hidden
+          style={{
+            opacity: smoothGlowOpacity,
+            background: glareBackground,
+          }}
+          className="pointer-events-none absolute inset-0 z-[1]"
+        />
+        <div className="relative z-10 h-full">{children}</div>
+      </MotionDiv>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -156,18 +255,20 @@ export default function Home() {
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
-              <div
+              <TiltCard
                 key={feature.title}
-                className="rounded-3xl border border-slate-700/70 bg-slate-800/40 p-7 shadow-lg shadow-slate-950/40 transition hover:-translate-y-1 hover:border-blue-500/70"
+                className="rounded-3xl border border-slate-700/70 bg-slate-800/40 p-7 shadow-lg shadow-slate-950/40 transition-colors duration-200 hover:border-blue-400/80"
               >
-                <div className="mb-4 inline-flex rounded-2xl bg-blue-500/10 p-3 text-blue-400">
+                <div className="mb-4 inline-flex rounded-2xl bg-blue-500/10 p-3 text-blue-400 [transform:translateZ(18px)]">
                   <Icon size={22} />
                 </div>
-                <h3 className="text-lg font-bold text-white">{feature.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                <h3 className="text-lg font-bold text-white [transform:translateZ(12px)]">
+                  {feature.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-300 [transform:translateZ(8px)]">
                   {feature.desc}
                 </p>
-              </div>
+              </TiltCard>
             );
           })}
         </MotionDiv>
@@ -199,16 +300,20 @@ export default function Home() {
                 desc: 'Pause, resume, or reset any time until the pattern is fully clear.',
               },
             ].map((item) => (
-              <div
+              <TiltCard
                 key={item.step}
-                className="rounded-2xl border border-slate-700 bg-slate-800/60 p-6"
+                className="rounded-2xl border border-slate-700 bg-slate-800/60 p-6 transition-colors duration-200 hover:border-blue-400/75"
               >
-                <p className="text-sm font-black text-blue-400">{item.step}</p>
-                <h3 className="mt-2 text-lg font-bold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                <p className="text-sm font-black text-blue-400 [transform:translateZ(14px)]">
+                  {item.step}
+                </p>
+                <h3 className="mt-2 text-lg font-bold text-white [transform:translateZ(10px)]">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-300 [transform:translateZ(6px)]">
                   {item.desc}
                 </p>
-              </div>
+              </TiltCard>
             ))}
           </div>
         </MotionDiv>
@@ -225,21 +330,23 @@ export default function Home() {
             {outcomes.map((item) => {
               const Icon = item.icon;
               return (
-                <div
+                <TiltCard
                   key={item.title}
-                  className="rounded-2xl border border-slate-700 bg-slate-800/60 p-6"
+                  className="rounded-2xl border border-slate-700 bg-slate-800/60 p-6 transition-colors duration-200 hover:border-blue-400/75"
                 >
-                  <div className="mb-4 inline-flex rounded-xl bg-blue-500/10 p-2.5 text-blue-400">
+                  <div className="mb-4 inline-flex rounded-xl bg-blue-500/10 p-2.5 text-blue-400 [transform:translateZ(18px)]">
                     <Icon size={20} />
                   </div>
-                  <h4 className="text-lg font-bold text-white">{item.title}</h4>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                  <h4 className="text-lg font-bold text-white [transform:translateZ(10px)]">
+                    {item.title}
+                  </h4>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-300 [transform:translateZ(6px)]">
                     {item.desc}
                   </p>
-                  <p className="mt-4 text-xs font-bold tracking-wide text-blue-300 uppercase">
+                  <p className="mt-4 text-xs font-bold tracking-wide text-blue-300 uppercase [transform:translateZ(8px)]">
                     {item.tag}
                   </p>
-                </div>
+                </TiltCard>
               );
             })}
           </div>
