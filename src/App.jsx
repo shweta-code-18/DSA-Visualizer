@@ -9,13 +9,15 @@ import VisualizerPage from './pages/VisualizerPage';
 import LinkedListVisualizerPage from './pages/LinkedListVisualizerPage';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import { bubbleSortCPP } from './algorithms/bubbleSort';
-import { selectionSortCPP } from './algorithms/selectionSort';
-import { quickSortCPP } from './algorithms/quickSort';
-import { linearSearchCPP } from './algorithms/linearSearch';
-import { radixSortCPP } from './algorithms/radixSort';
-import { heapSortCPP } from './algorithms/heapSort';
-import { insertionSortCPP } from './algorithms/insertionSort';
+
+// UPDATED IMPORTS: Including both CPP and Java versions
+import { bubbleSortCPP, bubbleSortJava } from './algorithms/bubbleSort';
+import { selectionSortCPP, selectionSortJava } from './algorithms/selectionSort';
+import { quickSortCPP, quickSortJava } from './algorithms/quickSort';
+import { linearSearchCPP, linearSearchJava } from './algorithms/linearSearch';
+import { radixSortCPP, radixSortJava } from './algorithms/radixSort';
+import { heapSortCPP, heapSortJava } from './algorithms/heapSort';
+import { insertionSortCPP, insertionSortJava } from './algorithms/insertionSort';
 
 export default function App() {
   return (
@@ -24,7 +26,6 @@ export default function App() {
       <div className="flex flex-col min-h-screen bg-slate-900 text-white selection:bg-blue-500/30">
         <Navbar />
 
-        {/* Changed 'flex' to 'block' to avoid layout issues with the footer */}
         <main className="block">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -33,34 +34,34 @@ export default function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
 
-            {/* ONLY ONE ROUTE HERE */}
+            {/* UPDATED ROUTES: Passing both cppSnippet and javaSnippet */}
             <Route
               path="/visualizer/bubble-sort"
-              element={<VisualizerPage name="Bubble Sort" codeSnippet={bubbleSortCPP} />}
+              element={<VisualizerPage name="Bubble Sort" cppSnippet={bubbleSortCPP} javaSnippet={bubbleSortJava} />}
             />
             <Route
               path="/visualizer/selection-sort"
-              element={<VisualizerPage name="Selection Sort" codeSnippet={selectionSortCPP} />}
+              element={<VisualizerPage name="Selection Sort" cppSnippet={selectionSortCPP} javaSnippet={selectionSortJava} />}
             />
             <Route
               path="/visualizer/quick-sort"
-              element={<VisualizerPage name="Quick Sort" codeSnippet={quickSortCPP} />}
+              element={<VisualizerPage name="Quick Sort" cppSnippet={quickSortCPP} javaSnippet={quickSortJava} />}
             />
             <Route
               path="/visualizer/linear-search"
-              element={<VisualizerPage name="Linear Search" codeSnippet={linearSearchCPP} />}
+              element={<VisualizerPage name="Linear Search" cppSnippet={linearSearchCPP} javaSnippet={linearSearchJava} />}
             />
             <Route
               path="/visualizer/radix-sort"
-              element={<VisualizerPage name="Radix Sort" codeSnippet={radixSortCPP} />}
+              element={<VisualizerPage name="Radix Sort" cppSnippet={radixSortCPP} javaSnippet={radixSortJava} />}
             />
             <Route
               path="/visualizer/heap-sort"
-              element={<VisualizerPage name="Heap Sort" codeSnippet={heapSortCPP} />}
+              element={<VisualizerPage name="Heap Sort" cppSnippet={heapSortCPP} javaSnippet={heapSortJava} />}
             />
             <Route 
               path="/visualizer/insertion-sort" 
-              element={<VisualizerPage name="Insertion Sort" codeSnippet={insertionSortCPP} />} 
+              element={<VisualizerPage name="Insertion Sort" cppSnippet={insertionSortCPP} javaSnippet={insertionSortJava} />} 
             />
             <Route
               path="/visualizer/linked-list"

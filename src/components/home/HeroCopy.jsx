@@ -41,7 +41,7 @@ export default function HeroCopy() {
           Real-time Animation
         </span>
         <span className="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2">
-          Clean C++ Snippets
+          Clean C++, Java Snippets
         </span>
         <span className="rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2">
           Open Source
