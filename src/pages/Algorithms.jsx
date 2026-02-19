@@ -133,7 +133,7 @@ const algorithmsCatalog = [
   },
   {
     id: 'linked-list',
-    title: 'Linked List Essentials',
+    title: 'Reverse Linked List',
     description:
       'Visualize Reverse Linked List and Middle Node (slow/fast pointers) with step-by-step pointer movement.',
     path: '/visualizer/linked-list',
