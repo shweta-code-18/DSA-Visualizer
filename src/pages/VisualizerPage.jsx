@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw, Play, Pause, RotateCcw, Code2 } from 'lucide-react';
 import { selectionSort } from '../algorithms/selectionSort';
@@ -122,8 +122,15 @@ const algorithmMap = {
       "Depth First Search traversal on an implicit Binary Tree structure.",
   },
   'Merge Sort': {
-    run: mergeSort,
-  },
+  run: mergeSort,
+  category: "Sorting",
+  best: "O(n log n)",
+  average: "O(n log n)",
+  worst: "O(n log n)",
+  space: "O(n)",
+  description:
+    "Merge Sort is a divide-and-conquer algorithm that splits the array into halves, recursively sorts them, and merges the sorted halves.",
+},
 // Add your algorithm name and function to the run parameter.
 };
 

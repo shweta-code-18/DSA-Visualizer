@@ -104,6 +104,20 @@ const algorithmsCatalog = [
     accent: 'text-fuchsia-200',
   },
   {
+    id: 'merge-sort',
+    title: 'Merge Sort',
+    description:
+      'A divide and conquer algorithm that splits the array into halves, recursively sorts them, and merges them.',
+    path: '/visualizer/merge-sort',
+    category: 'sorting',
+    type: 'Divide & Conquer',
+    complexity: 'O(n log n)',
+    level: 'Intermediate',
+    icon: Layers,
+    gradient: 'from-indigo-500/25 via-blue-500/15 to-transparent',
+    accent: 'text-indigo-200',
+  },
+  {
     id: 'heap-sort',
     title: 'Heap Sort',
     description:
@@ -200,28 +214,6 @@ const complexityRank = {
 };
 
 export default function Algorithms() {
-  const algorithms = [
-    {
-      id: 'bubble-sort',
-      title: 'Bubble Sort',
-      description: 'A simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.',
-      path: '/visualizer/bubble-sort'
-    },
-    {
-      id: "selection-sort",
-      title:"Selection Sort",
-      description:"Selection sort repeatedly finds the smallest element in the unsorted part of the array and places it in its correct position. ",
-      path: '/visualizer/selection-sort'
-    },
-    {
-      id: 'merge-sort',
-      title: 'Merge Sort',
-      description: 'A divide and conquer algorithm that divides the array into halves, recursively sorts them, and merges them.',
-      path: '/visualizer/merge-sort'
-    }
-    
-    // Future algorithms can be added here easily!
-  ];
   useDocumentTitle('Algorithms');
 
   const [activeFilter, setActiveFilter] = useState('all');
