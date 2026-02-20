@@ -29,6 +29,7 @@ import { insertionSort } from "../algorithms/insertionSort";
 import { dfs } from "../algorithms/dfs";
 import { interpolationSearch } from "../algorithms/interpolationSearch";
 import { renderHighlightedCode } from "../utils/codeHighlight";
+import { binarysearch } from '../algorithms/binarySearch';
 
 const algorithmMap = {
   "Bubble Sort": {
@@ -70,6 +71,16 @@ const algorithmMap = {
     space: "O(1)",
     description:
       "Linear Search scans each value from left to right until the target value is discovered.",
+  },
+  "Binary Search":{
+    run: binarysearch,//  function for animation
+    category: "Searching",
+    best: "O(1)",                // if the target is in the middle
+    average: "O(log n)",
+    worst: "O(log n)",
+    space: "O(1)",
+    description:
+      "Searches a sorted array by repeatedly dividing the search interval in half to find the target element.",
   },
   "Interpolation Search": {
     run: interpolationSearch,

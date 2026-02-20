@@ -69,6 +69,12 @@ import { mergeSortCPP,
   mergeSortJS,
 
 } from './algorithms/mergeSort';
+import {
+  binarySearchCPP,
+  binarySearchJava,
+  binarySearchPython,
+  binarySearchJS
+} from "./algorithms/binarySearch";
 import { dfsCPP, dfsJava } from "./algorithms/dfs";
 
 export default function App() {
@@ -132,6 +138,18 @@ export default function App() {
                   javaSnippet={linearSearchJava}
                   pythonSnippet={linearSearchPython}
                   jsSnippet={linearSearchJS}
+                />
+              }
+            />
+            <Route
+              path="/visualizer/binary-search"
+              element={
+                <VisualizerPage 
+                  name="Binary Search"
+                  cppSnippet={binarySearchCPP}
+                  javaSnippet={binarySearchJava}
+                  pythonSnippet={binarySearchPython}
+                  jsSnippet={binarySearchJS}
                 />
               }
             />

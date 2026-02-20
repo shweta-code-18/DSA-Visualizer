@@ -1,119 +1,104 @@
 import { sleep } from '../utils/helpers';
 
-export const binarySearch = async (array, setArray, speed, stopSignal, pauseSignal) => {
-    // Binary Search requires a sorted array
-    // We'll sort the array first for visualization purposes if it's not sorted
-    // But since we can't easily check if it's "sorted enough" visually, 
-    // we'll just sort it and visualize the sort quickly or just set it sorted.
-    // However, to keep it simple and consistent with other visualizations,
-    // we will start by sorting the array internally and updating the visual state.
-
+export const binarysearch = async(array, setArray, speed, stopSignal, pauseSignal) => {
+    //making a copy to as we cant manipulate directly in react
+    //sorting LOGIC
     let arr = array.map(item => ({ ...item }));
-
-    // Sort the array by value
-    arr.sort((a, b) => a.value - b.value);
-
-    // Mark all as default initially
-    arr.forEach(item => item.status = 'default');
-    setArray([...arr]);
-    await sleep(speed);
-
+    arr.sort(function(a, b){return a.value - b.value});
     let n = arr.length;
 
-    // Pick a random target from the existing array
-    let randomIndex = Math.floor(Math.random() * n);
-    let target = arr[randomIndex].value;
 
-    console.log(`Binary Search Target: ${target}`);
+    //selecting a random number
+    let randnum = Math.floor(Math.random() * n);
+    let target = arr[randnum].value;
 
-    // Highlight target - but we can't easily show "target" separate from array in this current UI
-    // The Linear Search impl marks the actual element at randomIndex as 'target'.
-    // But in Binary Search, we don't know where the target is yet.
-    // So we won't mark it in the array until found. 
-    // We can't really "show" the target value in the current UI except maybe in the legend or title?
-    // The current UI shows "Status: running", etc.
-    // Let's just proceed with searching.
+    //setting Array as arr
+    arr[randnum].status='target';
+    setArray([...arr]);
 
-    let left = 0;
-    let right = n - 1;
+    await sleep(1000);
 
-    while (left <= right) {
-        if (stopSignal.current) return;
-        while (pauseSignal.current) {
-            if (stopSignal.current) return;
-            await sleep(100);
+    console.log(`binarySearch Search Target: ${target}`);
+
+    let high=n-1;
+    let low=0;
+    let mid;
+    while(low<=high){
+
+        //stop logic
+        if(stopSignal.current) return;
+
+        //pause logic
+        while(pauseSignal.current){
+            if(stopSignal.current) return;
+            await sleep(1000);
         }
 
-        let mid = Math.floor((left + right) / 2);
+        mid=Math.floor((high+low)/2);
+        arr[mid].status="comparing";
+        setArray([...arr]);//setting to yellow for comparing
+        await sleep(Math.max(speed, 1000));
 
-        // Highlight the current range
-        for (let i = 0; i < n; i++) {
-            if (i >= left && i <= right) {
-                arr[i].status = 'default'; // In range
-            } else {
-                arr[i].status = 'sorted'; // Out of range (using 'sorted' color for inactive/discarded)
-                // Or maybe use a different color? 'sorted' is green. 
-                // Maybe we want 'comparing' for active range?
-            }
-        }
-
-        // Highlight mid
-        arr[mid].status = 'comparing'; // Yellow
-        setArray([...arr]);
-        await sleep(Math.max(speed, 100));
-
-        if (arr[mid].value === target) {
-            arr[mid].status = 'pivot'; // Purple (Target found)
+        if(arr[mid].value==target){
+            arr[mid].status='sorted'; //marking Green
             setArray([...arr]);
             await sleep(1000);
             return;
         }
-
-        if (arr[mid].value < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
+        if(arr[mid].value>target){
+            high=mid-1;
+            for(let i=mid;i<n;i++){
+                arr[i].status='swapping'//marking red for showing discarded
+            }
+            setArray([...arr]);
+        }
+        else{
+            low=mid+1;
+            for(let i=mid;i>=0;i--){
+                arr[i].status='swapping'
+            }
+            setArray([...arr]);
         }
     }
-};
-
-export const binarySearchCPP = `#include <iostream>
-#include <algorithm>
-using namespace std;
-
-// Function to perform Binary Search
-int binarySearch(int arr[], int n, int target) {
-    int left = 0, right = n - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-
-        if (arr[mid] == target)
-            return mid;
-
-        if (arr[mid] < target)
-            left = mid + 1;
-        else
-            right = mid - 1;
-    }
-    return -1;
+    console.log("Element does not exist in array");
 }
 
-int main() {
-    int arr[] = {10, 20, 30, 50, 70, 80};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int target = 30;
+export const binarySearchCPP = `#include <iostream>
+using namespace std;
 
-    // Ensure array is sorted
-    sort(arr, arr + n);
+void binarysearch(int arr[],int target,int n){
+    int low=0;
+    int high=n-1;
+    int mid;
+    while(low<=high){
+        mid=(high+low)/2;
+        if(arr[mid]==target){
+            cout<<"Element has been found at position "<<mid;
+            return;
+        }
+        if(arr[mid]>target){
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+    cout<<"Element does not exist in array";
+}
 
-    int result = binarySearch(arr, n, target);
+int main(){
+    int n;
+    int target;
+    cout<<"Enter the number of elements and elements";
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    cout<<"Enter the target";
+    cin>>target;
 
-    if (result != -1)
-        cout << "Element found at index: " << result;
-    else
-        cout << "Element not found";
-        
-    return 0;
+    binarysearch(arr,target,n);
 }`;
 
 export const binarySearchJava = `import java.util.Arrays;
@@ -211,7 +196,7 @@ arr.sort((a, b) => a - b);
 const result = binarySearch(arr, target);
 
 if (result !== -1) {
-    console.log(\"Element found at index:\", result);
+    console.log("Element found at index:", result);
 } else {
-    console.log(\"Element not found\");
+    console.log("Element not found");
 }`;
