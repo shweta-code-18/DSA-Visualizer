@@ -91,6 +91,20 @@ const algorithmsCatalog = [
     accent: 'text-emerald-100',
   },
   {
+    id: 'binary-search',
+    title: 'Binary Search',
+    description:
+      'Intakes a sorted array to find mid and halfing the array in two',
+    path: '/visualizer/binary-search',
+    category: "searching",
+    type : 'Divide & Conquer',
+    complexity : 'O(log n)',
+    level: "Beginner",
+    icon: Search,
+    gradient: 'from-blue-400/25 via-cyan-500/15 to-transparent',
+    accent: 'text-cyan-100'
+  },
+  {
     id: 'radix-sort',
     title: 'Radix Sort',
     description:
