@@ -16,6 +16,7 @@ import {
   Waypoints,
   Flag,
   Network,
+  ArrowLeft,
 } from "lucide-react";
 import {
   kruskalCPP,
@@ -25,6 +26,7 @@ import {
   generateKruskalSteps,
 } from "../algorithms/kruskal";
 import { renderHighlightedCode } from "../utils/codeHighlight";
+import { useNavigate } from "react-router-dom";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 450;
@@ -90,6 +92,7 @@ const generateRandomGraph = (numNodes = 6) => {
 
 export default function KruskalPage() {
   useDocumentTitle("Kruskal's Algorithm");
+  const navigate = useNavigate();
   const [nodeCount, setNodeCount] = useState(6);
   const [graph, setGraph] = useState(() => generateRandomGraph(nodeCount));
   const [steps, setSteps] = useState([]);
@@ -207,6 +210,18 @@ export default function KruskalPage() {
       >
         <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <div>
+            <div className="mb-6 flex items-center">
+              <button
+                onClick={() => navigate("/algorithms")}
+                className="group flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pr-4 pl-3 py-1.5 text-xs font-bold text-slate-300 transition-all hover:bg-white/10 hover:text-white"
+              >
+                <ArrowLeft
+                  size={14}
+                  className="transition-transform group-hover:-translate-x-1"
+                />
+                Back to Algorithms
+              </button>
+            </div>
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <span className="rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-orange-200">
                 Pathfinding

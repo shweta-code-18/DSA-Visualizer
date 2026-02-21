@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useMemo, useState } from "react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { Link } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpWideNarrow,
@@ -17,229 +17,232 @@ import {
   X,
   Zap,
   Waypoints,
-} from 'lucide-react';
+} from "lucide-react";
 
 const algorithmsCatalog = [
   {
-    id: 'bubble-sort',
-    title: 'Bubble Sort',
+    id: "bubble-sort",
+    title: "Bubble Sort",
     description:
-      'A simple sorting algorithm that repeatedly compares adjacent elements and swaps them when needed.',
-    path: '/visualizer/bubble-sort',
-    category: 'sorting',
-    type: 'Comparison',
-    complexity: 'O(n^2)',
-    level: 'Beginner',
+      "A simple sorting algorithm that repeatedly compares adjacent elements and swaps them when needed.",
+    path: "/visualizer/bubble-sort",
+    category: "sorting",
+    type: "Comparison",
+    complexity: "O(n^2)",
+    level: "Beginner",
     icon: ArrowUpWideNarrow,
-    gradient: 'from-cyan-500/25 via-blue-500/15 to-transparent',
-    accent: 'text-cyan-200',
+    gradient: "from-cyan-500/25 via-blue-500/15 to-transparent",
+    accent: "text-cyan-200",
   },
   {
-    id: 'selection-sort',
-    title: 'Selection Sort',
+    id: "selection-sort",
+    title: "Selection Sort",
     description:
-      'Selects the minimum value from the unsorted part and places it in its final position each pass.',
-    path: '/visualizer/selection-sort',
-    category: 'sorting',
-    type: 'In-place',
-    complexity: 'O(n^2)',
-    level: 'Beginner',
+      "Selects the minimum value from the unsorted part and places it in its final position each pass.",
+    path: "/visualizer/selection-sort",
+    category: "sorting",
+    type: "In-place",
+    complexity: "O(n^2)",
+    level: "Beginner",
     icon: Sparkles,
-    gradient: 'from-blue-500/25 via-indigo-500/15 to-transparent',
-    accent: 'text-blue-200',
+    gradient: "from-blue-500/25 via-indigo-500/15 to-transparent",
+    accent: "text-blue-200",
   },
   {
-    id: 'quick-sort',
-    title: 'Quick Sort',
+    id: "quick-sort",
+    title: "Quick Sort",
     description:
       "A fast divide-and-conquer algorithm that partitions around a pivot and recursively sorts subarrays.",
-    path: '/visualizer/quick-sort',
-    category: 'sorting',
-    type: 'Divide & Conquer',
-    complexity: 'O(n log n)',
-    level: 'Intermediate',
+    path: "/visualizer/quick-sort",
+    category: "sorting",
+    type: "Divide & Conquer",
+    complexity: "O(n log n)",
+    level: "Intermediate",
     icon: Zap,
-    gradient: 'from-cyan-400/25 via-sky-500/15 to-transparent',
-    accent: 'text-sky-200',
+    gradient: "from-cyan-400/25 via-sky-500/15 to-transparent",
+    accent: "text-sky-200",
   },
   {
-    id: 'linear-search',
-    title: 'Linear Search',
+    id: "linear-search",
+    title: "Linear Search",
     description:
-      'Scans values one-by-one from left to right until the target is found.',
-    path: '/visualizer/linear-search',
-    category: 'searching',
-    type: 'Sequential',
-    complexity: 'O(n)',
-    level: 'Beginner',
-    icon: Search,
-    gradient: 'from-blue-400/25 via-cyan-500/15 to-transparent',
-    accent: 'text-cyan-100',
-  },
-  {
-    id: 'interpolation-search',
-    title: 'Interpolation Search',
-    description:
-      'Probes the array based on the target value distribution in a sorted list for faster retrieval.',
-    path: '/visualizer/interpolation-search',
-    category: 'searching',
-    type: 'Probing',
-    complexity: 'O(log log n)',
-    level: 'Intermediate',
-    icon: Search,
-    gradient: 'from-emerald-400/25 via-teal-500/15 to-transparent',
-    accent: 'text-emerald-100',
-  },
-  {
-    id: 'binary-search',
-    title: 'Binary Search',
-    description:
-      'Intakes a sorted array to find mid and halfing the array in two',
-    path: '/visualizer/binary-search',
-    category: "searching",
-    type : 'Divide & Conquer',
-    complexity : 'O(log n)',
+      "Scans values one-by-one from left to right until the target is found.",
+    path: "/visualizer/linear-search",
+    category: "1d-array-searching",
+    type: "Sequential",
+    complexity: "O(n)",
     level: "Beginner",
     icon: Search,
-    gradient: 'from-blue-400/25 via-cyan-500/15 to-transparent',
-    accent: 'text-cyan-100'
+    gradient: "from-blue-400/25 via-cyan-500/15 to-transparent",
+    accent: "text-cyan-100",
   },
   {
-    id: 'radix-sort',
-    title: 'Radix Sort',
+    id: "interpolation-search",
+    title: "Interpolation Search",
     description:
-      'A non-comparative sorting algorithm that sorts integers by processing individual digits.',
-    path: '/visualizer/radix-sort',
-    category: 'sorting',
-    type: 'Distribution',
-    complexity: 'O(nk)',
-    level: 'Advanced',
+      "Probes the array based on the target value distribution in a sorted list for faster retrieval.",
+    path: "/visualizer/interpolation-search",
+    category: "1d-array-searching",
+    type: "Probing",
+    complexity: "O(log log n)",
+    level: "Intermediate",
+    icon: Search,
+    gradient: "from-emerald-400/25 via-teal-500/15 to-transparent",
+    accent: "text-emerald-100",
+  },
+  {
+    id: "binary-search",
+    title: "Binary Search",
+    description:
+      "Intakes a sorted array to find mid and halfing the array in two",
+    path: "/visualizer/binary-search",
+    category: "1d-array-searching",
+    type: "Divide & Conquer",
+    complexity: "O(log n)",
+    level: "Beginner",
+    icon: Search,
+    gradient: "from-blue-400/25 via-cyan-500/15 to-transparent",
+    accent: "text-cyan-100",
+  },
+  {
+    id: "radix-sort",
+    title: "Radix Sort",
+    description:
+      "A non-comparative sorting algorithm that sorts integers by processing individual digits.",
+    path: "/visualizer/radix-sort",
+    category: "sorting",
+    type: "Distribution",
+    complexity: "O(nk)",
+    level: "Advanced",
     icon: Sparkles,
-    gradient: 'from-fuchsia-500/25 via-purple-500/15 to-transparent',
-    accent: 'text-fuchsia-200',
+    gradient: "from-fuchsia-500/25 via-purple-500/15 to-transparent",
+    accent: "text-fuchsia-200",
   },
   {
-    id: 'merge-sort',
-    title: 'Merge Sort',
+    id: "merge-sort",
+    title: "Merge Sort",
     description:
-      'A divide and conquer algorithm that splits the array into halves, recursively sorts them, and merges them.',
-    path: '/visualizer/merge-sort',
-    category: 'sorting',
-    type: 'Divide & Conquer',
-    complexity: 'O(n log n)',
-    level: 'Intermediate',
+      "A divide and conquer algorithm that splits the array into halves, recursively sorts them, and merges them.",
+    path: "/visualizer/merge-sort",
+    category: "sorting",
+    type: "Divide & Conquer",
+    complexity: "O(n log n)",
+    level: "Intermediate",
     icon: Layers,
-    gradient: 'from-indigo-500/25 via-blue-500/15 to-transparent',
-    accent: 'text-indigo-200',
+    gradient: "from-indigo-500/25 via-blue-500/15 to-transparent",
+    accent: "text-indigo-200",
   },
   {
-    id: 'heap-sort',
-    title: 'Heap Sort',
+    id: "heap-sort",
+    title: "Heap Sort",
     description:
-      'A comparison-based sorting algorithm that uses a binary heap data structure to sort elements efficiently.',
-    path: '/visualizer/heap-sort',
-    category: 'sorting',
-    type: 'Comparison',
-    complexity: 'O(n log n)',
-    level: 'Intermediate',
+      "A comparison-based sorting algorithm that uses a binary heap data structure to sort elements efficiently.",
+    path: "/visualizer/heap-sort",
+    category: "sorting",
+    type: "Comparison",
+    complexity: "O(n log n)",
+    level: "Intermediate",
     icon: Layers,
-    gradient: 'from-emerald-500/25 via-teal-500/15 to-transparent',
-    accent: 'text-emerald-200',
+    gradient: "from-emerald-500/25 via-teal-500/15 to-transparent",
+    accent: "text-emerald-200",
   },
   {
-    id: 'insertion-sort',
-    title: 'Insertion Sort',
+    id: "insertion-sort",
+    title: "Insertion Sort",
     description:
-      'Builds a sorted array one item at a time by shifting elements that are greater than the key to the right.',
-    path: '/visualizer/insertion-sort',
-    category: 'sorting',
-    type: 'In-place',
-    complexity: 'O(n^2)',
-    level: 'Beginner',
+      "Builds a sorted array one item at a time by shifting elements that are greater than the key to the right.",
+    path: "/visualizer/insertion-sort",
+    category: "sorting",
+    type: "In-place",
+    complexity: "O(n^2)",
+    level: "Beginner",
     icon: Layers,
-    gradient: 'from-emerald-500/25 via-teal-500/15 to-transparent',
-    accent: 'text-emerald-200',
+    gradient: "from-emerald-500/25 via-teal-500/15 to-transparent",
+    accent: "text-emerald-200",
   },
   {
-    id: 'linked-list',
-    title: 'Reverse Linked List',
+    id: "linked-list",
+    title: "Reverse Linked List",
     description:
-      'Visualize Reverse Linked List and Middle Node (slow/fast pointers) with step-by-step pointer movement.',
-    path: '/visualizer/linked-list',
-    category: 'linked-list',
-    type: 'Pointers',
-    complexity: 'O(n)',
-    level: 'Intermediate',
+      "Visualize Reverse Linked List and Middle Node (slow/fast pointers) with step-by-step pointer movement.",
+    path: "/visualizer/linked-list",
+    category: "linked-list",
+    type: "Pointers",
+    complexity: "O(n)",
+    level: "Intermediate",
     icon: Binary,
-    gradient: 'from-violet-500/25 via-blue-500/15 to-transparent',
-    accent: 'text-violet-200',
+    gradient: "from-violet-500/25 via-blue-500/15 to-transparent",
+    accent: "text-violet-200",
   },
   {
-    id: 'prims',
+    id: "prims",
     title: "Prim's Algorithm",
-    description: 'Build a Minimum Spanning Tree by greedily adding the cheapest edge that connects a visited node to an unvisited node.',
-    path: '/visualizer/prims',
-    category: 'searching', // Or 'graphs' if you have it
-    type: 'MST',
-    complexity: 'O(E log V)',
-    level: 'Hard',
-    icon: Network,
-    gradient: 'from-emerald-500/25 via-teal-500/15 to-transparent',
-    accent: 'text-emerald-200',
-},
-  {
-    id: 'depth-first-search',
-    title: 'Depth First Search',
     description:
-      'Traverse a tree or graph by exploring as far as possible along each branch before backtracking.',
-    path: '/visualizer/dfs',
-    category: 'searching', // or 'graph' if you prefer, but sticking to existing categories
-    type: 'Traversal',
-    complexity: 'O(V+E)', // or O(n) for tree
-    level: 'Intermediate',
-    icon: Binary,
-    gradient: 'from-violet-500/25 via-fuchsia-500/15 to-transparent',
-    accent: 'text-violet-200',
+      "Build a Minimum Spanning Tree by greedily adding the cheapest edge that connects a visited node to an unvisited node.",
+    path: "/visualizer/prims",
+    category: "mst",
+    type: "MST",
+    complexity: "O(E log V)",
+    level: "Hard",
+    icon: Network,
+    gradient: "from-emerald-500/25 via-teal-500/15 to-transparent",
+    accent: "text-emerald-200",
   },
   {
-    id: 'dijkstra',
+    id: "depth-first-search",
+    title: "Depth First Search",
+    description:
+      "Traverse a tree or graph by exploring as far as possible along each branch before backtracking.",
+    path: "/visualizer/dfs",
+    category: "graph-searching",
+    type: "Traversal",
+    complexity: "O(V+E)",
+    level: "Intermediate",
+    icon: Binary,
+    gradient: "from-violet-500/25 via-fuchsia-500/15 to-transparent",
+    accent: "text-violet-200",
+  },
+  {
+    id: "dijkstra",
     title: "Dijkstra's Algorithm",
     description:
       "Finds the shortest paths between nodes in a graph, which may represent road networks.",
-    path: '/visualizer/dijkstra',
-    category: 'pathfinding',
-    type: 'Greedy',
-    complexity: 'O(E + V log V)',
-    level: 'Advanced',
+    path: "/visualizer/dijkstra",
+    category: "pathfinding",
+    type: "Greedy",
+    complexity: "O(E + V log V)",
+    level: "Advanced",
     icon: Waypoints,
-    gradient: 'from-orange-500/25 via-amber-500/15 to-transparent',
-    accent: 'text-orange-200',
+    gradient: "from-orange-500/25 via-amber-500/15 to-transparent",
+    accent: "text-orange-200",
   },
   {
-    id: 'kruskal',
+    id: "kruskal",
     title: "Kruskal's Algorithm",
     description:
       "Finds a Minimum Spanning Tree (MST) for a connected weighted graph using a greedy approach.",
-    path: '/visualizer/kruskal',
-    category: 'pathfinding',
-    type: 'Greedy',
-    complexity: 'O(E log E)',
-    level: 'Intermediate',
-    icon: Waypoints,
-    gradient: 'from-orange-500/25 via-amber-500/15 to-transparent',
-    accent: 'text-orange-200',
+    path: "/visualizer/kruskal",
+    category: "mst",
+    type: "Greedy",
+    complexity: "O(E log E)",
+    level: "Intermediate",
+    icon: Network,
+    gradient: "from-orange-500/25 via-amber-500/15 to-transparent",
+    accent: "text-orange-200",
   },
 ];
 
 const filterTabs = [
-  { id: 'all', label: 'All' },
-  { id: 'sorting', label: 'Sorting' },
-  { id: 'searching', label: 'Searching' },
-  { id: 'linked-list', label: 'Linked List' },
-  { id: 'pathfinding', label: 'Pathfinding' },
+  { id: "all", label: "All" },
+  { id: "sorting", label: "Sorting" },
+  { id: "1d-array-searching", label: "1D Array Searching" },
+  { id: "graph-searching", label: "Graph Searching" },
+  { id: "linked-list", label: "Linked List" },
+  { id: "pathfinding", label: "Pathfinding" },
+  { id: "mst", label: "Minimum Spanning Tree" },
 ];
 
-const levelTabs = ['All', 'Beginner', 'Intermediate', 'Advanced'];
+const levelTabs = ["All", "Beginner", "Intermediate", "Advanced"];
 
 const levelRank = {
   Beginner: 1,
@@ -248,20 +251,20 @@ const levelRank = {
 };
 
 const complexityRank = {
-  'O(1)': 1,
-  'O(log n)': 2,
-  'O(n)': 3,
-  'O(n log n)': 4,
-  'O(n^2)': 5,
+  "O(1)": 1,
+  "O(log n)": 2,
+  "O(n)": 3,
+  "O(n log n)": 4,
+  "O(n^2)": 5,
 };
 
 export default function Algorithms() {
-  useDocumentTitle('Algorithms');
+  useDocumentTitle("Algorithms");
 
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [searchText, setSearchText] = useState('');
-  const [sortBy, setSortBy] = useState('featured');
-  const [activeLevel, setActiveLevel] = useState('All');
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [searchText, setSearchText] = useState("");
+  const [sortBy, setSortBy] = useState("featured");
+  const [activeLevel, setActiveLevel] = useState("All");
   const [spotlightId, setSpotlightId] = useState(algorithmsCatalog[0].id);
   const prefersReducedMotion = useReducedMotion();
 
@@ -273,8 +276,10 @@ export default function Algorithms() {
     const normalizedQuery = searchText.trim().toLowerCase();
 
     const result = algorithmsCatalog.filter((algorithm) => {
-      const matchesFilter = activeFilter === 'all' || algorithm.category === activeFilter;
-      const matchesLevel = activeLevel === 'All' || algorithm.level === activeLevel;
+      const matchesFilter =
+        activeFilter === "all" || algorithm.category === activeFilter;
+      const matchesLevel =
+        activeLevel === "All" || algorithm.level === activeLevel;
       const matchesSearch =
         normalizedQuery.length === 0 ||
         algorithm.title.toLowerCase().includes(normalizedQuery) ||
@@ -283,18 +288,19 @@ export default function Algorithms() {
       return matchesFilter && matchesSearch && matchesLevel;
     });
 
-    if (sortBy === 'name') {
+    if (sortBy === "name") {
       return [...result].sort((a, b) => a.title.localeCompare(b.title));
     }
 
-    if (sortBy === 'complexity') {
+    if (sortBy === "complexity") {
       return [...result].sort(
         (a, b) =>
-          (complexityRank[a.complexity] ?? 99) - (complexityRank[b.complexity] ?? 99),
+          (complexityRank[a.complexity] ?? 99) -
+          (complexityRank[b.complexity] ?? 99),
       );
     }
 
-    if (sortBy === 'level') {
+    if (sortBy === "level") {
       return [...result].sort(
         (a, b) => (levelRank[a.level] ?? 99) - (levelRank[b.level] ?? 99),
       );
@@ -312,33 +318,39 @@ export default function Algorithms() {
   }, [filteredAlgorithms, spotlightId]);
 
   const sortingCount = algorithmsCatalog.filter(
-    (algorithm) => algorithm.category === 'sorting',
+    (algorithm) => algorithm.category === "sorting",
   ).length;
-  const searchingCount = algorithmsCatalog.filter(
-    (algorithm) => algorithm.category === 'searching',
+  const arraySearchingCount = algorithmsCatalog.filter(
+    (algorithm) => algorithm.category === "1d-array-searching",
+  ).length;
+  const graphSearchingCount = algorithmsCatalog.filter(
+    (algorithm) => algorithm.category === "graph-searching",
   ).length;
   const linkedListCount = algorithmsCatalog.filter(
-    (algorithm) => algorithm.category === 'linked-list',
+    (algorithm) => algorithm.category === "linked-list",
   ).length;
   const hasActiveFilters =
-    activeFilter !== 'all' || activeLevel !== 'All' || searchText.trim().length > 0;
+    activeFilter !== "all" ||
+    activeLevel !== "All" ||
+    searchText.trim().length > 0;
   const SpotlightIcon = spotlightAlgorithm.icon;
 
   const handleResetFilters = () => {
-    setActiveFilter('all');
-    setActiveLevel('All');
-    setSearchText('');
-    setSortBy('featured');
+    setActiveFilter("all");
+    setActiveLevel("All");
+    setSearchText("");
+    setSortBy("featured");
   };
 
   const handleRandomSpotlight = () => {
-    const source = filteredAlgorithms.length > 0 ? filteredAlgorithms : algorithmsCatalog;
+    const source =
+      filteredAlgorithms.length > 0 ? filteredAlgorithms : algorithmsCatalog;
     const randomAlgorithm = source[Math.floor(Math.random() * source.length)];
     setSpotlightId(randomAlgorithm.id);
   };
 
   // Logic to determine which Categories to display headers for
-  const categoriesToDisplay = filterTabs.filter(tab => tab.id !== 'all');
+  const categoriesToDisplay = filterTabs.filter((tab) => tab.id !== "all");
 
   return (
     <div className="font-body relative mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:py-14">
@@ -346,20 +358,28 @@ export default function Algorithms() {
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(125deg,rgba(16,185,129,0.08)_0%,rgba(14,165,233,0.02)_48%,rgba(245,158,11,0.08)_100%)]" />
       <MotionDiv
         className="pointer-events-none absolute -left-12 top-24 -z-10 h-44 w-44 rounded-full bg-cyan-400/20 blur-3xl"
-        animate={prefersReducedMotion ? undefined : { y: [0, -18, 0], opacity: [0.45, 0.8, 0.45] }}
+        animate={
+          prefersReducedMotion
+            ? undefined
+            : { y: [0, -18, 0], opacity: [0.45, 0.8, 0.45] }
+        }
         transition={
           prefersReducedMotion
             ? undefined
-            : { repeat: Infinity, duration: 6.4, ease: 'easeInOut' }
+            : { repeat: Infinity, duration: 6.4, ease: "easeInOut" }
         }
       />
       <MotionDiv
         className="pointer-events-none absolute -right-16 top-36 -z-10 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl"
-        animate={prefersReducedMotion ? undefined : { y: [0, 20, 0], opacity: [0.35, 0.65, 0.35] }}
+        animate={
+          prefersReducedMotion
+            ? undefined
+            : { y: [0, 20, 0], opacity: [0.35, 0.65, 0.35] }
+        }
         transition={
           prefersReducedMotion
             ? undefined
-            : { repeat: Infinity, duration: 7.2, ease: 'easeInOut' }
+            : { repeat: Infinity, duration: 7.2, ease: "easeInOut" }
         }
       />
 
@@ -382,26 +402,57 @@ export default function Algorithms() {
               Discover, Compare, and Visualize Algorithms
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
-              Find the right algorithm with live filters, better metadata, and smooth
-              transitions designed for focused learning on desktop and mobile.
+              Find the right algorithm with live filters, better metadata, and
+              smooth transitions designed for focused learning on desktop and
+              mobile.
             </p>
 
-            <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-5">
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs uppercase tracking-wider text-slate-400">Algorithms</p>
-                <p className="mt-1 text-2xl font-bold text-white">{algorithmsCatalog.length}</p>
+                <p className="text-[10px] lg:text-xs uppercase tracking-wider text-slate-400 truncate">
+                  Algorithms
+                </p>
+                <p className="mt-1 text-2xl font-bold text-white">
+                  {algorithmsCatalog.length}
+                </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs uppercase tracking-wider text-slate-400">Sorting</p>
-                <p className="mt-1 text-2xl font-bold text-cyan-200">{sortingCount}</p>
+                <p className="text-[10px] lg:text-xs uppercase tracking-wider text-slate-400 truncate">
+                  Sorting
+                </p>
+                <p className="mt-1 text-2xl font-bold text-cyan-200">
+                  {sortingCount}
+                </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs uppercase tracking-wider text-slate-400">Searching</p>
-                <p className="mt-1 text-2xl font-bold text-blue-200">{searchingCount}</p>
+                <p
+                  className="text-[10px] lg:text-xs uppercase tracking-wider text-slate-400 truncate"
+                  title="1D Array Search"
+                >
+                  1D Array
+                </p>
+                <p className="mt-1 text-2xl font-bold text-blue-200">
+                  {arraySearchingCount}
+                </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs uppercase tracking-wider text-slate-400">Linked List</p>
-                <p className="mt-1 text-2xl font-bold text-violet-200">{linkedListCount}</p>
+                <p
+                  className="text-[10px] lg:text-xs uppercase tracking-wider text-slate-400 truncate"
+                  title="Graph Search"
+                >
+                  Graph
+                </p>
+                <p className="mt-1 text-2xl font-bold text-emerald-200">
+                  {graphSearchingCount}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-[10px] lg:text-xs uppercase tracking-wider text-slate-400 truncate">
+                  Linked List
+                </p>
+                <p className="mt-1 text-2xl font-bold text-violet-200">
+                  {linkedListCount}
+                </p>
               </div>
             </div>
           </div>
@@ -415,7 +466,9 @@ export default function Algorithms() {
                 <SpotlightIcon size={20} />
               </span>
               <div>
-                <h2 className="font-display text-xl font-bold text-white">{spotlightAlgorithm.title}</h2>
+                <h2 className="font-display text-xl font-bold text-white">
+                  {spotlightAlgorithm.title}
+                </h2>
                 <p className="text-xs uppercase tracking-widest text-slate-400">
                   {spotlightAlgorithm.type}
                 </p>
@@ -493,10 +546,11 @@ export default function Algorithms() {
                 type="button"
                 onClick={() => setActiveFilter(tab.id)}
                 aria-pressed={activeFilter === tab.id}
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition-all ${activeFilter === tab.id
-                  ? 'border-blue-400/60 bg-blue-500/20 text-blue-100 shadow-lg shadow-blue-900/30'
-                  : 'border-white/10 bg-white/5 text-slate-300 hover:border-cyan-400/40 hover:text-white'
-                  }`}
+                className={`rounded-full border px-4 py-2 text-sm font-semibold transition-all ${
+                  activeFilter === tab.id
+                    ? "border-blue-400/60 bg-blue-500/20 text-blue-100 shadow-lg shadow-blue-900/30"
+                    : "border-white/10 bg-white/5 text-slate-300 hover:border-cyan-400/40 hover:text-white"
+                }`}
               >
                 {tab.label}
               </button>
@@ -517,7 +571,10 @@ export default function Algorithms() {
               <option value="name" className="bg-slate-900 text-slate-100">
                 Name
               </option>
-              <option value="complexity" className="bg-slate-900 text-slate-100">
+              <option
+                value="complexity"
+                className="bg-slate-900 text-slate-100"
+              >
                 Complexity
               </option>
               <option value="level" className="bg-slate-900 text-slate-100">
@@ -534,17 +591,18 @@ export default function Algorithms() {
               type="button"
               onClick={() => setActiveLevel(level)}
               aria-pressed={activeLevel === level}
-              className={`rounded-full border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition-all ${activeLevel === level
-                ? 'border-emerald-400/55 bg-emerald-500/15 text-emerald-100'
-                : 'border-white/10 bg-white/5 text-slate-300 hover:border-emerald-400/40 hover:text-white'
-                }`}
+              className={`rounded-full border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition-all ${
+                activeLevel === level
+                  ? "border-emerald-400/55 bg-emerald-500/15 text-emerald-100"
+                  : "border-white/10 bg-white/5 text-slate-300 hover:border-emerald-400/40 hover:text-white"
+              }`}
             >
               {level}
             </button>
           ))}
           <span className="w-full rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300 sm:ml-auto sm:w-auto">
             Showing {filteredAlgorithms.length} result
-            {filteredAlgorithms.length === 1 ? '' : 's'}
+            {filteredAlgorithms.length === 1 ? "" : "s"}
           </span>
         </div>
       </MotionSection>
@@ -553,7 +611,9 @@ export default function Algorithms() {
       <div className="space-y-16 mt-12">
         {categoriesToDisplay.map((cat) => {
           // Filter algorithms that belong to this specific category
-          const categoryAlgos = filteredAlgorithms.filter(algo => algo.category === cat.id);
+          const categoryAlgos = filteredAlgorithms.filter(
+            (algo) => algo.category === cat.id,
+          );
 
           // If no algorithms in this category match current search/filters, don't show the header
           if (categoryAlgos.length === 0) return null;
@@ -567,7 +627,8 @@ export default function Algorithms() {
                 </h2>
                 <div className="h-[1px] flex-grow bg-gradient-to-r from-white/15 to-transparent" />
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded border border-white/5">
-                  {categoryAlgos.length} {categoryAlgos.length === 1 ? 'Algorithm' : 'Algorithms'}
+                  {categoryAlgos.length}{" "}
+                  {categoryAlgos.length === 1 ? "Algorithm" : "Algorithms"}
                 </span>
               </div>
 
@@ -605,7 +666,9 @@ export default function Algorithms() {
                           </span>
                         </div>
 
-                        <h2 className="font-display text-2xl font-bold text-white">{algorithm.title}</h2>
+                        <h2 className="font-display text-2xl font-bold text-white">
+                          {algorithm.title}
+                        </h2>
                         <p className="mt-3 text-sm leading-relaxed text-slate-300">
                           {algorithm.description}
                         </p>
@@ -646,7 +709,8 @@ export default function Algorithms() {
               No Match
             </p>
             <p className="mt-3 text-sm sm:text-base">
-              No algorithm matched your search. Try another keyword or switch filter.
+              No algorithm matched your search. Try another keyword or switch
+              filter.
             </p>
           </div>
         </MotionDiv>
